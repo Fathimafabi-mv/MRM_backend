@@ -1,6 +1,7 @@
 const express=require("express");
 const connectedDB = require("./DB/connectionDB");
 const userRouter = require("./controller/authController");
+const adminRouter = require("./controller/adminController")
 const dotenv=require("dotenv").config();
 const cors = require('cors')
 
@@ -14,6 +15,7 @@ app.get("/",(req,res)=>{
 
 
 app.use("/api/v1/",userRouter)
+app.use("/api/v1/", adminRouter)
 
 const start=async()=>{
     try {
