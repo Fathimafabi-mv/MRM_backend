@@ -19,7 +19,7 @@ router.post("/add-category",upload.single("categoryImage"),catchAsyncError(async
        if(!category){
         return res.status(404).json({message:"Categorydetails not found "})
        }
-       res.status(200).json({message:"category created!"})
+       res.status(200).json({message:"category created!",category})
 
 
     }catch(error){
@@ -36,8 +36,26 @@ router.get("/get-category",catchAsyncError(async(req,res,next)=>{
     }
 }))
 
-
-
+router.delete("/delete-category/:id",catchAsyncError(async(req,res,next)=>{
+    try {
+          const {id}=req.params;
+          const deleteCategory=await categoryModel.findOneAndDelete({_id:id})
+          res.status(200).json({message:"category deleted!"});
+    } catch (error) 
+    {
+     return next(new ErrorHandler(error.message,404));   
+    }
+}))
+// router.patch("/edit-category/:id",upload.single("categoryImage"),catchAsyncError(async(req,res,next)=>{
+//     try {
+//         const{id}=req.params;
+//         const{categoryname,categoryImage}
+        
+//     } catch (error) {
+//         return next(new ErrorHandler(error.message,404));
+//     }
+// })
+// )
 
 module.exports=router
 
