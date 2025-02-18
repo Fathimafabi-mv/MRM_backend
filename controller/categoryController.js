@@ -75,7 +75,7 @@ router.patch("/edit-category/:id",upload.single("categoryImage"),catchAsyncError
         const updated = await categoryModel.findByIdAndUpdate(id, {$set:updateCategory},{
             runValidators: true, new: true
         })
-        res.status(200).json({message: "category updated"})
+        res.status(200).json({message: "category updated",updated})
     } catch (error) {
         return next(new ErrorHandler(error.message,404));
     }
