@@ -46,16 +46,41 @@ router.delete("/delete-category/:id",catchAsyncError(async(req,res,next)=>{
      return next(new ErrorHandler(error.message,404));   
     }
 }))
-// router.patch("/edit-category/:id",upload.single("categoryImage"),catchAsyncError(async(req,res,next)=>{
-//     try {
-//         const{id}=req.params;
-//         const{categoryname,categoryImage}
-        
-//     } catch (error) {
-//         return next(new ErrorHandler(error.message,404));
-//     }
-// })
-// )
+router.patch("/edit-category/:id",upload.single("categoryImage"),catchAsyncError(async(req,res,next)=>{
+    try {
+        const{id}=req.params;
+        const{categoryname,categoryImage,Hascategory} = req.body
+        const categoryExist = await categoryModel.findById(id)
+        if(!categoryExist){
+            return res.status(404).json({message: "category not found"})
+        }
+        const updateCategory = {}
+
+        if(categoryname){
+            updateCategory.categoryname = categoryname
+        }
+
+        if(Hascategory !== undefined){
+            updateCategory.Hascategory = Hascategory
+        }
+
+        if(req.file){
+            const filename=req.file.filename;
+            const filepath=`uploads${filename}`;
+            const fileurl=`http://localhost:4000/uploads/${filename}`
+           
+            updateCategory.categoryImage = fileurl
+        }
+
+        const updated = await categoryModel.findByIdAndUpdate(id, {$set:updateCategory},{
+            runValidators: true, new: true
+        })
+        res.status(200).json({message: "category updated"})
+    } catch (error) {
+        return next(new ErrorHandler(error.message,404));
+    }
+})
+)
 
 module.exports=router
 
