@@ -2,6 +2,7 @@ const express = require('express')
 const catchAsyncError = require('../Middleware/catchAsyncError')
 const ErrorHandler = require('../Utils/ErrorHandler')
 const adminModel = require('../Models/adminModel')
+const sendToken = require('../Utils/jwtToken')
 
 const router = express.Router()
 
@@ -37,7 +38,7 @@ router.post('/admin-login', catchAsyncError(async (req,res,next) => {
         if(!isMatch){
             return res.status(400).json({message: "Invalid username or password"})
         }
-        res.status(200).json({message: "Login success"})
+        sendToken(user,200,res)
     } catch (error) {
         return next(new ErrorHandler(error.message, 400))
     }

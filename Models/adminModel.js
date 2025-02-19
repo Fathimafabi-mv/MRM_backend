@@ -1,4 +1,5 @@
 const mongoose=require("mongoose");
+const jwt=require("jsonwebtoken")
 const bcrypt=require("bcryptjs")
 
 const AdminSchema = new mongoose.Schema({
@@ -34,4 +35,11 @@ AdminSchema.pre("save", async function(next){
   AdminSchema.methods.comparePassword= async function (enterpassword) {
     return await  bcrypt.compare(enterpassword, this.password )
 }
+
+AdminSchema.methods.getJwtToken=function(){
+  return jwt.sign({id:this._id},process.env.JWT_SECRET_KEY,{
+      expiresIn:process.env.JWT_EXPIRES,
+  });
+  }
+
 module.exports=mongoose.model("Admin",AdminSchema);

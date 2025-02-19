@@ -10,6 +10,11 @@ const categorySchema=new mongoose.Schema({
     },
     Hascategory:{
         type:Boolean,
+    },
+    subCategory:{
+        type:mongoose.Schema.Types.ObjectId,  //referencing the objectid of category
+        ref:"category",
+        default:null,
     }
 })
 
