@@ -5,16 +5,23 @@ const productModel=require("../Models/productModel");
 const { upload } = require("../Multer");
 const router=express.Router();
 
-router.post("/add-product",upload.single("productImage"),catchAsyncError(async(req,res,next)=>{
+router.post("/add-product",upload.array("productImage",5),catchAsyncError(async(req,res,next)=>{
+    // use multiple images,so its replace single and adding array and number
     try {
-        const {productname,productDescription,productquantity,productMRP}=req.body;
-        if(!req.file){
+        const {productname,productDescription,productquantity,productMRP, productCategory}=req.body;
+        if(!req.files){
             return res.status(404).json({message:"No file uploaded!"})
         }
-        const filename=req.file.filename;
-        const filepath=`uploads${filename}`;
-        const fileurl=`http://localhost:4000/uploads/${filename}`
-        const productDeials={productname,productImage:fileurl,productDescription,productquantity,productMRP};
+        
+        const ExistingPoduct= await productModel.findOne({productname})
+        if(ExistingPoduct){
+            return res.status(200).json({message:"product already exist!"})
+
+        }
+        const fileurl=req.files.map((file)=>`http://localhost:4000/uploads/${file.filename}`)
+        
+       
+        const productDeials={productname,productImage:fileurl,productDescription,productquantity,productMRP, productCategory};
         const product=await productModel.create(productDeials);
         if(!product){
             return res.status(404).json({message:"Product details not found"})
@@ -45,10 +52,13 @@ router.delete("/delete-product/:id",catchAsyncError(async(req,res,next)=>{
         return next(new ErrorHandler(error.message,404))
     }
 }))
-router.get("/get-product/:id",catchAsyncError(async(req,res,next)=>{
+router.get("/get-product-category/:id",catchAsyncError(async(req,res,next)=>{
    try {
        const{id}=req.params;
-       const getproductId=await productModel.findById({_id:id})
+       const getproductId=await productModel.find({ productCategory:id})
+       if(!getproductId){
+        res.status(404).json({message:"products not found"})
+       }
        res.status(200).json({getproductId})
    } catch (error) {
       return next(new ErrorHandler(error.message,404))

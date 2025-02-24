@@ -6,21 +6,26 @@ const ProductSchema= new mongoose.Schema({
         required:true,
     },
     productImage:{
-        type:String,
+        type:[String],
         required:true,
     },
     productDescription:{
         type:String,
         required:true,
-        minlength:[4,"username must be alteast 4 character"],
+        
     },
     productquantity:{
-        type:Number,
-        required:true,
+        type:String,
+    
     },
     productMRP:{
-        type:Number,
+        type:String,
     },
+    productCategory:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"category",
+        default:null,
+    }
 })
 
 module.exports= mongoose.model("Product",ProductSchema)

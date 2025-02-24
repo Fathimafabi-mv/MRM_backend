@@ -82,6 +82,15 @@ router.patch("/edit-category/:id",upload.single("categoryImage"),catchAsyncError
 })
 )
 
+router.get("/get-subcategory/:id",catchAsyncError(async(req,res,next)=>{
+    try {
+        const {id}=req.params;
+        const getSubcategory=await categoryModel.find({subCategory:id})
+        res.status(200).json({getSubcategory})
+    } catch (error) {
+        
+    }
+}))
 
 module.exports=router
 
