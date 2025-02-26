@@ -21,8 +21,8 @@ router.post("/add-product",upload.array("productImage",5),catchAsyncError(async(
         const fileurl=req.files.map((file)=>`http://localhost:4000/uploads/${file.filename}`)
         
        
-        const productDeials={productname,productImage:fileurl,productDescription,productquantity,productMRP, productCategory};
-        const product=await productModel.create(productDeials);
+        const productDetails={productname,productImage:fileurl,productDescription,productquantity,productMRP, productCategory};
+        const product=await productModel.create(productDetails);
         if(!product){
             return res.status(404).json({message:"Product details not found"})
         }

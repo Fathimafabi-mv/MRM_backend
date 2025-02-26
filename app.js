@@ -2,7 +2,8 @@ const express=require("express");
 const connectedDB = require("./DB/connectionDB");
 const userRouter = require("./controller/authController");
 const adminRouter = require("./controller/adminController");
-const productRouter=require("./controller/productController")
+const productRouter=require("./controller/productController");
+const unitRouter=require("./controller/unitController")
 const dotenv=require("dotenv").config();
 const cors = require('cors')
 const categoryRouter=require("./controller/categoryController");
@@ -21,6 +22,7 @@ app.use("/api/v1/",userRouter)
 app.use("/api/v1/", adminRouter)
 app.use("/api/v1/",categoryRouter)
 app.use("/api/v1/",productRouter)
+app.use("/api/v1/",unitRouter)
 app.use("/uploads",express.static(path.join(__dirname,"uploads")))
 const start=async()=>{
     try {
