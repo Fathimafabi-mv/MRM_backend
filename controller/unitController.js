@@ -52,7 +52,7 @@ router.patch("/edit-unit/:id",catchAsyncError(async(req,res,next)=>{
             updatedUnit.unit=unit;
         }
         const updated=await unitModel.findByIdAndUpdate(id,{$set:updatedUnit},{runValidators:true,new:true})
-        res.status(200).json({message:"unit details updated!.."})
+        res.status(200).json({message:"unit details updated!..",updated})
     } catch (error) {
         return next(new ErrorHandler(error.message,404))
     }
