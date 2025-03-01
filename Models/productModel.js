@@ -14,6 +14,9 @@ const ProductSchema= new mongoose.Schema({
         required:true,
         
     },
+    unit:{
+        type:String,
+    },
     productquantity:{
         type:String,
     

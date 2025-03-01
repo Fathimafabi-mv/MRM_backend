@@ -8,7 +8,7 @@ const router=express.Router();
 router.post("/add-product",upload.array("productImage",5),catchAsyncError(async(req,res,next)=>{
     // use multiple images,so its replace single and adding array and number
     try {
-        const {productname,productDescription,productquantity,productMRP, productCategory}=req.body;
+        const {productname,productDescription,productquantity,productMRP,unit,productCategory}=req.body;
         if(!req.files){
             return res.status(404).json({message:"No file uploaded!"})
         }
@@ -21,7 +21,7 @@ router.post("/add-product",upload.array("productImage",5),catchAsyncError(async(
         const fileurl=req.files.map((file)=>`http://localhost:4000/uploads/${file.filename}`)
         
        
-        const productDetails={productname,productImage:fileurl,productDescription,productquantity,productMRP, productCategory};
+        const productDetails={productname,productImage:fileurl,productDescription,unit,productquantity,productMRP, productCategory};
         const product=await productModel.create(productDetails);
         if(!product){
             return res.status(404).json({message:"Product details not found"})
@@ -84,6 +84,9 @@ router.patch("/edit-product/:id",upload.single("productImage"),catchAsyncError(a
         }
         if(productMRP){
             updatedProduct.productMRP=productMRP;
+        }
+        if(unit){
+            updatedProduct.unit=unit;
         }
         if(req.file){
             const filename=req.file.filename;
