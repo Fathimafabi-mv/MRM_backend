@@ -18,11 +18,11 @@ const ProductSchema= new mongoose.Schema({
         type:String,
     },
     productquantity:{
-        type:String,
+        type:Number,
     
     },
     productMRP:{
-        type:String,
+        type:Number,
     },
     productCategory:{
         type:mongoose.Schema.Types.ObjectId,
