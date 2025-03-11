@@ -41,4 +41,28 @@ router.delete("/delete-order/:id",catchAsyncError(async(req,res,next)=>{
         return next(new ErrorHandler(error.message,404))
     }
 }))
+router.get("/get-order/:id",catchAsyncError(async(req,res,next)=>{
+    try {
+        const {id}=req.params;
+        const getOrderID=await orderModel.find({_id:id})
+        if(!getOrderID){
+            return res.status(404).json({message:"Order not found!"})
+        }
+        res.status(200).json({getOrderID})
+    } catch (error) {
+        return next(new ErrorHandler(error.message,404))
+    }
+}))
+router.patch("/update-order/:id",catchAsyncError(async(req,res,next)=>{
+    try {
+        const{id}=req.params;
+        const UpdatedOrder=await orderModel.findByIdAndUpdate(id,req.body,{runValidators:true,new:true});
+        if(!UpdatedOrder){
+            return res.status(404).json({message:`No order found this Id:${id}`})
+        }
+        res.status(200).json({success:true,message:`Order updated successfully`,UpdatedOrder})
+    } catch (error) {
+        return next(new ErrorHandler(error.message,404))
+    }
+}))
 module.exports=router;

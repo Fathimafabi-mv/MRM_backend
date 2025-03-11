@@ -11,13 +11,16 @@ const orderSchema= new mongoose.Schema({
             type:String,
             required:true,
         },
+        productImage:{
+            type:[String],
+            required:true,
+        },
        unit:{
             type:String,
         },
         productquantity:{
             type:Number,
             default:1,
-        
         },
         price:{
         type:Number,
